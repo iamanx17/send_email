@@ -1,0 +1,143 @@
+{% extends 'core/base.html' %} {% block title %}Free email service {% endblock title%} 
+
+{% block content %} 
+
+{% if messages is not None %}
+<div class="container my-5">
+  {% for i in messages %}
+  <div class="alert alert-{{i.tags}} alert-dismissible fade show" role="alert">
+    <strong>Hey {{user.username}}</strong>{{i}}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container my-5">
+  <h1 class="text-center text-info mb-4">Welcome to free email service</h1>
+  <hr class="w-50 mx-auto" />
+  {% if user.is_authenticated %}
+
+  <div class="row my-5">
+    <div class="col-lg-5 col-12">
+      <ul class="list-group">
+        <h3>Your email list:</h3>
+        {% for i in mails %}
+        <li
+          class="list-group-item list-group-item-dark justify-content-between d-flex"
+        >
+          {{i.email}}
+          <div class="button d-flex">
+            <form action="/delete/" method="post">
+              {% csrf_token %}
+              <input type="hidden" value="{{i.id}}" name="id" />
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+
+            <a href="/update/{{i.id}}" class="mx-1 btn btn-warning">Edit</a>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <form action="/addemail/" class="mt-3" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label"
+              >Email address</label
+            >
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder="name@example.com"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-success">Add to mailist</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-7 col-12 px-5">
+      <h3>Write your message:</h3>
+      <div class="form">
+        <form action="/" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >Subject</label
+              >
+              <input
+                type="text"
+                name="subject"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="Subject"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Write your message</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                name="message"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+              send your message
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+
+  <div class="button my-5 text-center">
+    <a href="/login/" class="btn btn-primary">Get started</a>
+  </div>
+  {% endif %}
+</div>
+
+{% if user.is_superuser %}
+<div class="container my-5">
+  <h3 class="text-center text-light mb-4">
+    Guidelines for superuser
+  </h3>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-dark">
+      You must disable 2 step verification.
+    </li>
+    <li class="list-group-item list-group-item-dark">
+      Please turn on this
+      <a
+        style="text-decoration: none"
+        href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiuuNOvlcbvAhXT7XMBHZNWDBMQFjAAegQIBBAD&url=https%3A%2F%2Fmyaccount.google.com%2Flesssecureapps&usg=AOvVaw3FH1O5TwzTEB9B9yhEUsI7"
+        >option</a
+      >
+    </li>
+    <li class="list-group-item list-group-item-dark">
+      You have to enable this to unblock ip if in case Google blocked it
+      <a
+        style="text-decoration: none"
+        href="https://accounts.google.com/DisplayUnlockCaptcha"
+        >Visit here</a
+      >
+    </li>
+  </ul>
+</div>
+{% endif %}
+
+{% endblock content %}

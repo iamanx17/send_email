@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %} {% block title %}Edit your email{% endblock title %}
+{% block content %}
+
+<div class="container my-5">
+  <h1 class="text-center text-info mb-4">Welcome to free email service</h1>
+  <hr class="w-50 mx-auto" />
+  {% if user.is_authenticated %}
+
+  <div class="row my-5">
+    <div class="col-lg-5 col-12">
+      <ul class="list-group">
+        <h3>Your current email:</h3>
+
+        <li
+          class="list-group-item list-group-item-dark justify-content-between d-flex"
+        >
+          {{email}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-7 col-12 px-5">
+      <h3>Update your email id</h3>
+      <div class="form">
+        <form action="/update/" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >Email</label
+              >
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="Email address"
+              />
+            </div>
+            <input type="hidden" value="{{email_id}}" name="id" />
+   
+
+            <button type="submit" class="btn btn-success">
+              Update your email
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+
+  <div class="button my-5 text-center">
+    <a href="/login/" class="btn btn-primary">Get started</a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}
