@@ -1,1 +1,1 @@
-web: gunicorn send_email.wsgi
+web: gunicorn emailservice.wsgi
