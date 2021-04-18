@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.core.mail import send_mail
-from send_email.settings import EMAIL_HOST_USER
+from emailservice.settings import EMAIL_HOST_USER
 from .models import emailids
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
@@ -14,7 +14,7 @@ def home(request):
         if request.method=='POST':
             subject=request.POST['subject']
             message=request.POST['message']
-            mark="This email is sent through a free email service https://freemailservice.herokuapp.com/"
+            mark="This email is sent through a free email service https://sendbulkmails.herokuapp.com/"
             message=message+"\n\n\n\n\n\n"+mark
             listof_mail=[]
             for i in mailids: 
